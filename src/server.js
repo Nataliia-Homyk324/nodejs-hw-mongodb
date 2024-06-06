@@ -1,7 +1,7 @@
 import express from 'express';
 import pino from 'pino-http';
 import cors from 'cors';
-import { getAllStudents, getStudentById } from './services/students.js';
+import { getAllContacts, getContactById } from './services/contacts.js';
 
 
 import { env } from './utils/env.js';
@@ -11,7 +11,7 @@ import { env } from './utils/env.js';
 const PORT = Number(env('PORT', '3000'));
 
 
-export const startServer = () => {
+export const setupServer = () => {
   const app = express();
 
   app.use(express.json());
@@ -30,21 +30,21 @@ export const startServer = () => {
       message: 'Hello world!',
     });
   });
-app.get('/students', async (req, res) => {
-    const students = await getAllStudents();
+app.get('/contacts', async (req, res) => {
+    const contacts = await getAllContacts();
 
     res.status(200).json({
-      data: students,
+      data: contacts,
     });
   });
 
 
- app.get('/students/:studentId', async (req, res) => {
-    const { studentId } = req.params;
-    const student = await getStudentById(studentId);
+ app.get('/contacts/:contactId', async (req, res) => {
+    const { contactId } = req.params;
+    const contact = await getContactById(contactId);
 
     res.status(200).json({
-      data: student,
+      data: contact,
     });
   });
 
