@@ -30,30 +30,49 @@ export const setupServer = () => {
       message: 'Hello world!',
     });
   });
-app.get('/contacts', async (req, res) => {
-    const contacts = await getAllContacts();
-
-  res.status(200).json({
-      message: `Successfully found contacts!`,
-      data: contacts,
-    });
+  
+ app.get('/contacts', async (req, res) => {
+    try {
+      const contacts = await getAllContacts();
+      res.status(200).json({
+        status: 'success',
+        message: 'Successfully found contacts!',
+        data: contacts,
+      });
+    } catch (err) {
+      res.status(500).json({
+        status: 'error',
+        message: 'Failed to fetch contacts',
+        error: err.message,
+      });
+    }
   });
 
-
-
   app.get('/contacts/:contactId', async (req, res) => {
-    const { contactId } = req.params;
-    const contact = await getContactById(contactId);
+    try {
+      const { contactId } = req.params;
+      const contact = await getContactById(contactId);
 
-    if (contact) {
-        res.status(200).json({
-            message: `Successfully found contact with id ${contactId}!`,
-            data: contact,
+      if (!contact) {
+        return res.status(404).json({
+          status: 'error',
+          message: `Contact with id ${contactId} not found`,
         });
-    } else {
-        res.status(404).json({ message: "Contact not found" });
+      }
+
+      res.status(200).json({
+        status: 'success',
+        message: `Successfully found contact with id ${contactId}!`,
+        data: contact,
+      });
+    } catch (err) {
+      res.status(500).json({
+        status: 'error',
+        message: 'Failed to fetch contact',
+        error: err.message,
+      });
     }
-});
+  });
 
   app.use('*', (req, res, next) => {
     res.status(404).json({
