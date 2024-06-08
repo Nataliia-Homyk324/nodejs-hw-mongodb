@@ -32,12 +32,7 @@ const contactsSchema = new Schema(
 
 
   },
-   {
-    timestamps: {
-      createdAt: 'createdAt',
-      updatedAt: 'updatedAt',
-    },
-  },
+
   {
     timestamps: true,
     versionKey: false,
