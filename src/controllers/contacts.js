@@ -47,7 +47,7 @@ export const createContactController = async (req, res, next) => {
     next(createHttpError(400, 'Name and phoneNumber are required'));
     return;
   }
-
+  delete req.body._V;
   const newContact = await createContact(req.body);
 
   res.status(201).json({
