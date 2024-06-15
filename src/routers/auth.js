@@ -4,12 +4,12 @@ import { registerUserSchema } from '../validation/auth.js';
 import { registerUserController } from '../controllers/auth.js';
 import { validateBody } from '../middlewares/validateBody.js';
 
-const router = Router();
+const authRouter = Router();
 
-router.post(
+authRouter.post(
   '/register',
   validateBody(registerUserSchema),
   ctrlWrapper(registerUserController),
 );
 
-export default router;
+export default authRouter;
