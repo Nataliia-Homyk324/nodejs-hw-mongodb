@@ -5,6 +5,7 @@ import { registerUserController } from '../controllers/auth.js';
 import { validateBody } from '../middlewares/validateBody.js';
 import { loginUserSchema} from '../validation/auth.js';
 import { loginUserController } from '../controllers/auth.js';
+import { logoutUserController } from '../controllers/auth.js';
 
 const authRouter = Router();
 
@@ -19,5 +20,8 @@ authRouter.post(
   validateBody(loginUserSchema),
   ctrlWrapper(loginUserController),
 );
+
+authRouter.post('/logout', ctrlWrapper(logoutUserController));
+
 
 export default authRouter;
