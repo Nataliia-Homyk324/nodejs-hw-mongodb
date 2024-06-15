@@ -1,5 +1,6 @@
 import { registerUser } from '../services/auth.js';
 import { loginUser } from '../services/auth.js';
+import { THIRTY_DAY } from '../index.js';
 
 export const registerUserController = async (req, res) => {
   const user = await registerUser(req.body);
@@ -12,7 +13,22 @@ export const registerUserController = async (req, res) => {
 };
 
 export const loginUserController = async (req, res) => {
-  await loginUser(req.body);
+  const session = await loginUser(req.body);
 
-  // далі ми доповнемо цей контролер
+  res.cookie('refreshToken', session.refreshToken, {
+    httpOnly: true,
+    expires: new Date(Date.now() + THIRTY_DAY),
+  });
+  res.cookie('sessionId', session._id, {
+    httpOnly: true,
+    expires: new Date(Date.now() + THIRTY_DAY),
+  });
+
+  res.json({
+    status: 200,
+    message: 'Successfully logged in an user!',
+    data: {
+      accessToken: session.accessToken,
+    },
+  });
 };

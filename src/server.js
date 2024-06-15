@@ -4,7 +4,7 @@ import cors from 'cors';
 import router from './routers/index.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
-
+import cookieParser from 'cookie-parser';
 
 
 import { env } from './utils/env.js';
@@ -37,6 +37,8 @@ export const setupServer = () => {
   app.use(router); // Додаємо роутер до app як middleware
 
   app.use('*', notFoundHandler);
+
+  app.use(cookieParser());
 
   app.use(errorHandler);
 
