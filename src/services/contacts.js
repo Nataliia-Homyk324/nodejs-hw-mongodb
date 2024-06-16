@@ -4,7 +4,8 @@ import { SORT_ORDER } from '../index.js';
 
 
 
-export const  getAllContacts = async ({
+export const getAllContacts = async ({
+
   page = 1,
   perPage = 10,
   sortOrder = SORT_ORDER.ASC,
@@ -23,7 +24,7 @@ export const  getAllContacts = async ({
 if (filter.isFavourite !== undefined) {
   contactsQuery.where('isFavourite').equals(filter.isFavourite);
 }
-  
+
   const contactsCount = await ContactsCollection.find()
     .merge(contactsQuery)
     .countDocuments();
