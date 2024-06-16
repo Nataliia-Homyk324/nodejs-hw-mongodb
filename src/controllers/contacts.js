@@ -4,8 +4,11 @@ import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
 
+
+
+// з userID
 export const getContactsController = async (
-  req,
+  userId, req,
   res,
 	next,
 ) => {
@@ -15,7 +18,7 @@ export const getContactsController = async (
     const filter = parseFilterParams(req.query);
 
 	  const contacts = await getAllContacts({
-     page,
+     userId, page,
      perPage,
      sortBy,
      sortOrder,
@@ -33,8 +36,8 @@ export const getContactsController = async (
 };
 
 export const getContactByIdController = async (req, res, next) => {
-  const { contactId } = req.params;
-  const contact = await getContactById(contactId);
+  const { contactId,userId  } = req.params;
+  const contact = await getContactById(contactId, userId);
 
   if (!contact) {
     // 2. Створюємо та налаштовуємо помилку
@@ -48,8 +51,6 @@ export const getContactByIdController = async (req, res, next) => {
     data: contact,
   });
 };
-
-
 
 export const createContactController = async (req, res, next) => {
   const { name, phoneNumber } = req.body;
@@ -69,9 +70,9 @@ export const createContactController = async (req, res, next) => {
 };
 
 export const deleteContactController = async (req, res, next) => {
-  const { contactId } = req.params;
+  const { contactId,userId } = req.params;
 
-  const contact = await deleteContact(contactId);
+  const contact = await deleteContact(contactId,userId);
 
   if (!contact) {
     next(createHttpError(404, 'Contact not found', { message: 'Contact not found' }));
@@ -82,8 +83,8 @@ export const deleteContactController = async (req, res, next) => {
 };
 
 export const patchContactController = async (req, res, next) => {
-  const { contactId } = req.params;
-  const result = await updateContact(contactId, req.body);
+  const { contactId,userId } = req.params;
+  const result = await updateContact(contactId,userId, req.body);
 
   if (!result) {
     next(createHttpError(404, 'Contact not found',   { message: 'Contact not found' } ));
@@ -97,9 +98,8 @@ export const patchContactController = async (req, res, next) => {
   });
 };
 
-// з userID
 // export const getContactsController = async (
-//   userId, req,
+//   req,
 //   res,
 // 	next,
 // ) => {
@@ -109,7 +109,7 @@ export const patchContactController = async (req, res, next) => {
 //     const filter = parseFilterParams(req.query);
 
 // 	  const contacts = await getAllContacts({
-//      userId, page,
+//      page,
 //      perPage,
 //      sortBy,
 //      sortOrder,
@@ -127,8 +127,8 @@ export const patchContactController = async (req, res, next) => {
 // };
 
 // export const getContactByIdController = async (req, res, next) => {
-//   const { contactId,userId  } = req.params;
-//   const contact = await getContactById(contactId, userId);
+//   const { contactId } = req.params;
+//   const contact = await getContactById(contactId);
 
 //   if (!contact) {
 //     // 2. Створюємо та налаштовуємо помилку
@@ -142,6 +142,8 @@ export const patchContactController = async (req, res, next) => {
 //     data: contact,
 //   });
 // };
+
+
 
 // export const createContactController = async (req, res, next) => {
 //   const { name, phoneNumber } = req.body;
@@ -161,9 +163,9 @@ export const patchContactController = async (req, res, next) => {
 // };
 
 // export const deleteContactController = async (req, res, next) => {
-//   const { contactId,userId } = req.params;
+//   const { contactId } = req.params;
 
-//   const contact = await deleteContact(contactId,userId);
+//   const contact = await deleteContact(contactId);
 
 //   if (!contact) {
 //     next(createHttpError(404, 'Contact not found', { message: 'Contact not found' }));
@@ -174,8 +176,8 @@ export const patchContactController = async (req, res, next) => {
 // };
 
 // export const patchContactController = async (req, res, next) => {
-//   const { contactId,userId } = req.params;
-//   const result = await updateContact(contactId,userId, req.body);
+//   const { contactId } = req.params;
+//   const result = await updateContact(contactId, req.body);
 
 //   if (!result) {
 //     next(createHttpError(404, 'Contact not found',   { message: 'Contact not found' } ));
