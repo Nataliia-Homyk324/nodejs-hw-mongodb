@@ -34,11 +34,13 @@ export const setupServer = () => {
     });
   });
 
+  app.use(cookieParser());
+
   app.use(router); // Додаємо роутер до app як middleware
 
   app.use('*', notFoundHandler);
 
-  app.use(cookieParser());
+
 
   app.use(errorHandler);
 
