@@ -60,12 +60,15 @@ export const getContactByIdController = async (req, res, next) => {
 export const createContactController = async (req, res, next) => {
   try {
     const { name, phoneNumber } = req.body;
-    const userId = req.user._id; // Використовуємо userId з мідлвари
+   
 
     if (!name || !phoneNumber) {
       next(createHttpError(400, 'Name and phone number are required'));
       return;
     }
+
+    const userId = req.user._id; // Використовуємо userId з мідлвари
+
 
     const newContact = await createContact({ ...req.body, userId });
 
