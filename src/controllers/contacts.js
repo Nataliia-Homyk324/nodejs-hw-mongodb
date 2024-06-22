@@ -3,6 +3,9 @@ import createHttpError from 'http-errors';
 import { parsePaginationParams } from '../utils/parsePaginationParams.js';
 import { parseSortParams } from '../utils/parseSortParams.js';
 import { parseFilterParams } from '../utils/parseFilterParams.js';
+import { saveFileToCloudinary } from '../utils/saveFileToCloudinary.js';
+
+
 
 //з userId, який додається до req.user мідлварою authenticate
 
@@ -60,7 +63,7 @@ export const getContactByIdController = async (req, res, next) => {
 export const createContactController = async (req, res, next) => {
   try {
     const { name, phoneNumber } = req.body;
-   
+
 
     if (!name || !phoneNumber) {
       next(createHttpError(400, 'Name and phone number are required'));
@@ -107,7 +110,14 @@ export const patchContactController = async (req, res, next) => {
     const { contactId } = req.params;
     const userId = req.user._id; // Використовуємо userId з мідлвари
 
-    const result = await updateContact({ contactId, userId, payload: req.body });
+    const photo = req.file;
+
+    let photoUrl;
+    if (photo) {
+      photoUrl = await saveFileToCloudinary(photo);
+    }
+
+    const result = await updateContact({ contactId, userId, payload: { ...req.body, photo: photoUrl } });
 
     if (!result) {
       next(createHttpError(404, 'Contact not found', { message: 'Contact not found' }));

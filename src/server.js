@@ -5,6 +5,7 @@ import router from './routers/index.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import cookieParser from 'cookie-parser';
+import { UPLOAD_DIR } from './constants/index.js';
 
 
 import { env } from './utils/env.js';
@@ -35,6 +36,7 @@ export const setupServer = () => {
   });
 
   app.use(cookieParser());
+   app.use('/uploads', express.static(UPLOAD_DIR));
 
   app.use(router); // Додаємо роутер до app як middleware
 
