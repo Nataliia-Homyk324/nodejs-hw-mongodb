@@ -72,8 +72,15 @@ export const createContactController = async (req, res, next) => {
 
     const userId = req.user._id; // Використовуємо userId з мідлвари
 
+    const photo = req.file;
 
-    const newContact = await createContact({ ...req.body, userId });
+    let photoUrl;
+    if (photo) {
+      photoUrl = await saveFileToCloudinary(photo);
+    }
+
+
+    const newContact = await createContact({  userId, payload: { ...req.body, photo: photoUrl } });
 
     res.status(201).json({
       status: 201,
