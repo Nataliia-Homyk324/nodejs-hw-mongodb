@@ -80,7 +80,7 @@ export const createContactController = async (req, res, next) => {
     }
 
 
-    const newContact = await createContact({  userId, payload: { ...req.body, photo: photoUrl } });
+    const newContact = await createContact({ userId,  ...req.body, photo: photoUrl   });
 
     res.status(201).json({
       status: 201,
