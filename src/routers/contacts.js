@@ -25,11 +25,11 @@ contactsRouter.get('/', ctrlWrapper(getContactsController));
 
 contactsRouter.get('/:contactId', isValidId, ctrlWrapper(getContactByIdController));
 
-contactsRouter.post('/', validateBody(createContactSchema),upload.single('photo'), ctrlWrapper(createContactController));
+contactsRouter.post('/',upload.single('photo'), validateBody(createContactSchema), ctrlWrapper(createContactController));
 
 contactsRouter.delete('/:contactId', isValidId, ctrlWrapper(deleteContactController));
 
-contactsRouter.patch('/:contactId', isValidId, validateBody(updateContactSchema),upload.single('photo'), ctrlWrapper(patchContactController));
+contactsRouter.patch('/:contactId', isValidId, upload.single('photo'),validateBody(updateContactSchema), ctrlWrapper(patchContactController));
 
 export default contactsRouter;
 

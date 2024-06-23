@@ -62,7 +62,7 @@ export const getContactByIdController = async (req, res, next) => {
 // Контролер для створення нового контакту
 export const createContactController = async (req, res, next) => {
   try {
-    const { name, phoneNumber } = req.body;
+    const { name, phoneNumber  } = req.body;
 
 
     if (!name || !phoneNumber) {
@@ -81,6 +81,9 @@ export const createContactController = async (req, res, next) => {
 
 
     const newContact = await createContact({ userId,  ...req.body, photo: photoUrl   });
+
+    // const newContact = await createContact({ ...req.body, userId });
+
 
     res.status(201).json({
       status: 201,
