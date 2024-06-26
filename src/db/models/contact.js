@@ -18,12 +18,14 @@ const contactsSchema = new Schema(
 
     },
      isFavourite: {
-      type: Boolean,
+       type: Boolean,
+
       default: false,
     },
 
     contactType: {
       type: String,
+
       enum: ['work', 'home', 'personal'],
       default: 'personal',
     },
